@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: intranet-web
+server:
+  port: 8070
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: ${EUREKA_URI:http://localhost:8761/eureka}
