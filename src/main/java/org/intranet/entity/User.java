@@ -1,35 +1,24 @@
 package org.intranet.entity;
 
 import javax.persistence.*;
+import java.util.Collection;
 
-@Entity(name = "USERS")
-public class User extends ParentEntity {
-    private String firstName;
-    private String lastName;
-    @Column(name = "username")
+@Entity(name = "users")
+public class User {
+
+    @Id
     private String username;
-    @Column(name = "password")
     private String password;
     private boolean enabled;
 
-    @OneToOne(cascade = {CascadeType.ALL})
-    private Authority authority;
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
+    @ManyToMany
+    @JoinTable(
+            name = "user_roles",
+            joinColumns = @JoinColumn(
+                    name = "username", referencedColumnName = "username"),
+            inverseJoinColumns = @JoinColumn(
+                    name = "role", referencedColumnName = "id"))
+    private Collection<Role> roles;
 
     public String getUsername() {
         return username;
@@ -55,12 +44,11 @@ public class User extends ParentEntity {
         this.enabled = enabled;
     }
 
-    public Authority getAuthority() {
-        return authority;
+    public Collection<Role> getRoles() {
+        return roles;
     }
 
-    public void setAuthority(Authority authority) {
-        authority.setUsername(this.username);
-        this.authority = authority;
+    public void setRoles(Collection<Role> roles) {
+        this.roles = roles;
     }
 }
