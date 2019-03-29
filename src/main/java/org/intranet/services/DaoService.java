@@ -22,13 +22,16 @@ public class DaoService {
     }
 
     public News saveNews(News news) {
-//        news.setDate(LocalDateTime.now());
-        News save = newsRepository.save(news);
-        return save;
+        return newsRepository.save(news);
     }
 
     public void saveUser(User user) {
         userRepository.save(user);
+    }
+
+    public void updateUser(User user) {
+        userRepository.updateFirstName(user.getUsername(),
+                user.getFirstName(), user.getLastName(), user.getEmail());
     }
 
     public Iterable<User> findAllUsers() {
@@ -37,6 +40,9 @@ public class DaoService {
 
     public List<News> getNews() {
         return newsRepository.findAllByOrderByDateDesc();
+    }
 
+    public User findByUsername(String currentPrincipalName) {
+        return userRepository.findByUsername(currentPrincipalName);
     }
 }

@@ -48,7 +48,7 @@ public class ApiController {
     }
 
     @GetMapping("/login")
-    public Principal user(Principal user) {
+    public Principal login(Principal user) {
         return user;
     }
 
@@ -56,9 +56,12 @@ public class ApiController {
     public User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentPrincipalName = authentication.getName();
-        User user = new User();
-        user.setUsername(currentPrincipalName);
-        return user;
+        return daoService.findByUsername(currentPrincipalName);
+    }
+
+    @PostMapping(value = "/user/update")
+    public void getUser(@RequestBody User user) {
+        daoService.updateUser(user);
     }
 
     @GetMapping(value = "/ping")

@@ -37,8 +37,8 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
 
         if (alreadySetup)
             return;
-        Role adminRole = createRoleIfNotFound("ROLE_ADMIN");
-        Role userRole = createRoleIfNotFound("ROLE_USER");
+        Role adminRole = createRole("ROLE_ADMIN");
+        Role userRole = createRole("ROLE_USER");
 
 
         User user = new User();
@@ -47,12 +47,17 @@ public class InitialDataLoader implements ApplicationListener<ContextRefreshedEv
         user.setUsername("test");
         user.setRoles(Arrays.asList(adminRole, userRole));
         user.setEnabled(true);
+
+        user.setFirstName("Oleg");
+        user.setLastName("Koibaev");
+        user.setEmail("test@test.com");
+
         userRepository.save(user);
         alreadySetup = true;
     }
 
     @Transactional
-    public Role createRoleIfNotFound(String name) {
+    public Role createRole(String name) {
 
         Role role = roleRepository.findByName(name);
         if (role == null) {
