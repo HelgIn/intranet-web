@@ -10,5 +10,5 @@ import javax.persistence.MappedSuperclass
 abstract class ParentEntity : Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Int = 0
+    var id: Long = 0
 }

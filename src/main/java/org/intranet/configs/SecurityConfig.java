@@ -32,6 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .mvcMatchers("/api/login").permitAll()
+                .mvcMatchers("/api/register").permitAll()
                 .mvcMatchers("/api/*").authenticated()
                 .and().httpBasic();
     }
@@ -41,6 +42,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public JdbcUserDetailsManager userDetailsService() {
         JdbcUserDetailsManager manager = new JdbcUserDetailsManager();
         manager.setJdbcTemplate(jdbcTemplate);
+        manager.setEnableAuthorities(false);
+        manager.setEnableGroups(true);
+        manager.setCreateUserSql("insert into users (username, password, enabled) values (?,?,?)");
         return manager;
     }
 
@@ -49,11 +53,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     public void configAuthentication(AuthenticationManagerBuilder auth) throws Exception {
-
-        auth.jdbcAuthentication().dataSource(dataSource)
+        auth.jdbcAuthentication().dataSource(dataSource).passwordEncoder(passwordEncoder())
                 .usersByUsernameQuery(
                         "select username,password, enabled from users where username=?")
                 .authoritiesByUsernameQuery(
                         "select username, role from user_roles where username=?");
+
+
+
     }
 }

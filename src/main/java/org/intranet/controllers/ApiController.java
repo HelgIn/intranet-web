@@ -3,10 +3,11 @@ package org.intranet.controllers;
 import org.intranet.entity.News;
 import org.intranet.entity.User;
 import org.intranet.services.DaoService;
+import org.intranet.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.provisioning.JdbcUserDetailsManager;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
@@ -18,17 +19,26 @@ public class ApiController {
 
     private final DaoService daoService;
 
-    private final PasswordEncoder passwordEncoder;
+    private final JdbcUserDetailsManager jdbcUserDetailsManager;
+
+    private final UserService userService;
 
     @Autowired
-    public ApiController(DaoService daoService, PasswordEncoder passwordEncoder) {
+    public ApiController(DaoService daoService, JdbcUserDetailsManager jdbcUserDetailsManager, UserService userService) {
         this.daoService = daoService;
-        this.passwordEncoder = passwordEncoder;
+        this.jdbcUserDetailsManager = jdbcUserDetailsManager;
+        this.userService = userService;
     }
 
     @GetMapping(value = "/news")
     public Iterable<News> getNews() {
         return daoService.getNews();
+    }
+
+    @GetMapping(value = "/news/{id}/")
+    public News getNewsById(@PathVariable("id") long id) throws InterruptedException {
+        Thread.sleep(2000);
+        return daoService.getNewsById(id);
     }
 
     @PostMapping(value = "/news/add")
@@ -38,8 +48,7 @@ public class ApiController {
 
     @PostMapping(value = "/register")
     public void addUser(@RequestBody User user) {
-        // TODO temp
-        daoService.saveUser(user);
+        jdbcUserDetailsManager.createUser(userService.mapUserToUserDetails(user));
     }
 
     @GetMapping(value = "/users")

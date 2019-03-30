@@ -45,4 +45,8 @@ public class DaoService {
     public User findByUsername(String currentPrincipalName) {
         return userRepository.findByUsername(currentPrincipalName);
     }
+
+    public News getNewsById(long id) {
+        return newsRepository.findById(id).orElse(null);
+    }
 }
