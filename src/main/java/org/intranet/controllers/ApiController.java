@@ -1,6 +1,6 @@
 package org.intranet.controllers;
 
-import org.intranet.entity.News;
+import org.intranet.entity.Post;
 import org.intranet.entity.User;
 import org.intranet.services.DaoService;
 import org.intranet.services.UserService;
@@ -30,20 +30,20 @@ public class ApiController {
         this.userService = userService;
     }
 
-    @GetMapping(value = "/news")
-    public Iterable<News> getNews() {
+    @GetMapping(value = "/post")
+    public Iterable<Post> getPosts() {
         return daoService.getNews();
     }
 
-    @GetMapping(value = "/news/{id}/")
-    public News getNewsById(@PathVariable("id") long id) throws InterruptedException {
+    @GetMapping(value = "/post/{id}/")
+    public Post getPostById(@PathVariable("id") long id) throws InterruptedException {
         Thread.sleep(2000);
         return daoService.getNewsById(id);
     }
 
-    @PostMapping(value = "/news/add")
-    public News addNews(@RequestBody News news) {
-        return daoService.saveNews(news);
+    @PostMapping(value = "/post/add")
+    public Post addPost(@RequestBody Post post) {
+        return daoService.saveNews(post);
     }
 
     @PostMapping(value = "/register")

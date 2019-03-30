@@ -1,6 +1,6 @@
 package org.intranet.services;
 
-import org.intranet.entity.News;
+import org.intranet.entity.Post;
 import org.intranet.entity.User;
 import org.intranet.repositories.NewsRepository;
 import org.intranet.repositories.UserRepository;
@@ -21,8 +21,8 @@ public class DaoService {
         this.newsRepository = newsRepository;
     }
 
-    public News saveNews(News news) {
-        return newsRepository.save(news);
+    public Post saveNews(Post post) {
+        return newsRepository.save(post);
     }
 
     public void saveUser(User user) {
@@ -38,7 +38,7 @@ public class DaoService {
         return userRepository.findAll();
     }
 
-    public List<News> getNews() {
+    public List<Post> getNews() {
         return newsRepository.findAllByOrderByDateDesc();
     }
 
@@ -46,7 +46,7 @@ public class DaoService {
         return userRepository.findByUsername(currentPrincipalName);
     }
 
-    public News getNewsById(long id) {
+    public Post getNewsById(long id) {
         return newsRepository.findById(id).orElse(null);
     }
 }

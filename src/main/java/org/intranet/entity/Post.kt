@@ -7,7 +7,7 @@ import javax.persistence.Entity
 import javax.persistence.PrePersist
 
 @Entity
-class News : ParentEntity() {
+class Post : ParentEntity() {
     var title: String? = null
     @Column(columnDefinition = "TEXT")
     var text: String? = null
